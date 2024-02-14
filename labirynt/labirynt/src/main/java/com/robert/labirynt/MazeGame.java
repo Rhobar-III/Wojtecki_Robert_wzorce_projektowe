@@ -13,7 +13,6 @@ import java.awt.Image;
 public class MazeGame {
 
     private Maze maze;
-    private MazeBomb mazeBomb;
     private int x, y;
 
     /**
@@ -25,30 +24,37 @@ public class MazeGame {
      */
     public Maze createMaze(int x, int y, MazeBuilder builder) {
         builder.buildMaze();
-        builder.buildMazeBomb();
         builder.buildRoom(1, x, y);
         builder.buildRoom(2, x, y + MapSite.LENGTH);
         builder.buildDoor(1, 2);
         builder.buildRoom(3, x + MapSite.LENGTH, y);
         builder.buildRoom(4, x + MapSite.LENGTH, y + MapSite.LENGTH);
-        builder.buildDoor(2, 4);
-        builder.buildDoor(3, 4);
         builder.buildDoor(1, 3);
-        builder.buildRoom(5, x + MapSite.LENGTH * 2, y);
-        builder.buildDoor(3, 5);
-        builder.buildRoom(6, x + MapSite.LENGTH, y + MapSite.LENGTH * 2);
-        builder.buildDoor(4, 6);
-        builder.buildRoomBomb('B',x + MapSite.LENGTH, y + MapSite.LENGTH * 3);
-       
-        //new room
-//        builder.buildRoom(5, x, y + MapSite.LENGTH * 2);
-//        builder.buildDoor(1, 3);
-//        builder.buildRoom(5, x, y + MapSite.LENGTH * 2);
-//        builder.buildDoor(2, 5);
-//        builder.buildRoom(6, x - MapSite.LENGTH, y + MapSite.LENGTH * 2);
-//        
-//        builder.buildRoom(7, x - MapSite.LENGTH * 2, y + MapSite.LENGTH * 2);
-//        builder.buildDoor(5, 6);
+        builder.buildDoor(2, 4);
+        
+           
+        int nr = 3;
+        for (int i = 1; i < 7; i++) {
+            builder.buildRoom(nr, x, y + MapSite.LENGTH * i);
+            builder.buildRoom(7 + i, x + MapSite.LENGTH, y + MapSite.LENGTH * i);
+            builder.buildRoom(11 + i, x + MapSite.LENGTH * 2, y + MapSite.LENGTH * i);
+            builder.buildDoor(nr, 7 + i);
+            builder.buildDoor(7 + i, 11 + i);
+            nr++;
+        }
+        
+        builder.buildDoor(1, 6);
+        
+        for (int i = 2; i < 8; i++) {
+            builder.buildDoor(i, i + 1);
+        }
+        
+        for (int i = 2; i < 6; i++) {
+            builder.buildRoom(15 + i, x + MapSite.LENGTH * i, y);
+        }
+        
+        builder.buildDoor(3, 17);
+        builder.buildDoor(17, 18);
         
         return builder.getMaze();
         
